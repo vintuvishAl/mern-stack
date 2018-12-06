@@ -4,34 +4,34 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 
 const users = require('./routes/api/users');
+const profile = require('./routes/api/profile');
 const posts = require('./routes/api/posts');
-const profiles = require('./routes/api/profiles');
 
 const app = express();
 
-//body parser middleware
-app.use(bodyParser.urlencoded({extended: false}));
+// Body parser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// db config
+// DB Config
 const db = require('./config/keys').mongoURI;
 
-// connect to mongodb
-mongoose.connect(db)
-.then(() => console.log('mongodb connected'))
-.catch(err => console.log(err));
+// Connect to MongoDB
+mongoose
+  .connect(db)
+  .then(() => console.log('MongoDB Connected'))
+  .catch(err => console.log(err));
 
-// passport middleware
+// Passport middleware
 app.use(passport.initialize());
 
-// passport config
+// Passport Config
 require('./config/passport')(passport);
 
-// use routes
+// Use Routes
 app.use('/api/users', users);
+app.use('/api/profile', profile);
 app.use('/api/posts', posts);
-app.use('/api/profile', profiles);
-
 
 const port = process.env.PORT || 5000;
 
